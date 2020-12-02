@@ -1,0 +1,28 @@
+# Time - O(n+m), where n = len(S) and m = len(T)
+# Space - O(1), since hashMap max size = 26
+# Ran on LC - Yes
+
+# 1. Create a frequency hashMap of the characters in T
+# 2. Look over S and add all occurences of the current letter from the hashMap
+# 3. Add the remaining characters from the hashMap into the result, and then print str(result)
+
+class Solution:
+    def customSortString(self, S: str, T: str) -> str:
+        hashMap = dict()
+        result = []
+        for i in range(len(T)):
+            if T[i] in hashMap:
+                hashMap[T[i]] += 1
+            else:
+                hashMap[T[i]] = 1
+        for i in range(len(S)):
+            if S[i] in hashMap:
+                while hashMap[S[i]] != 0:
+                    result.append(S[i])
+                    hashMap[S[i]] -= 1
+                del hashMap[S[i]]
+        for k, v in hashMap.items():
+            while hashMap[k] != 0:
+                result.append(k)
+                hashMap[k] -= 1
+        return ''.join(result)
