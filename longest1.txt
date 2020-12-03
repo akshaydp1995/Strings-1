@@ -1,0 +1,20 @@
+# Time - O(n)
+# Space - O(n) due to hashMap
+# Ran on LC - YES
+
+# One normal iteration of fast loop - Keep adding chars to hashMap {char: index}
+# If already in hashMap, move the slow pointer to that position+1 and update the hashMap
+# Keep checking max(maxLen, fast - slow) at each iteration; return at the end
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        hashMap = dict()
+        maxLen, slow = 0, 0
+        for i in range(len(s)):
+            if s[i] not in hashMap:
+                hashMap[s[i]] = i
+            else:
+                slow = max(slow, hashMap[s[i]]+1)
+                hashMap[s[i]] = i
+            maxLen = max(maxLen, i - slow + 1)
+        return maxLen
