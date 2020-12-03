@@ -1,0 +1,30 @@
+# Time - O(n) - two pointer approach
+# Space - O(maxLenSubWithoutRepeatCharcters)
+# Ran on LC - YES
+
+# Use two pointers. Slow pointer is controlled, fast is through a for loop.
+# Keep adding in hashMap if not already there (fast pointer char)
+# If already there, move slow to the index of where it was found (same character before) and delete everything on the way, from the hashMap, and keep moving slow forward
+# At each point, keep track of maxLen (fast - slow + 1)
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        hashMap = dict()
+        slow = 0
+        count = 0
+        maxLen = 0
+        for i in range(len(s)):
+            if s[i] not in hashMap:
+                hashMap[s[i]] = i
+                maxLen = max(maxLen, i - slow + 1)
+            else:
+                if s[slow] == s[i]:
+                    hashMap[s[i]] = i
+                    slow += 1
+                else:
+                    while s[slow] != s[i]:
+                        del hashMap[s[slow]]
+                        slow += 1
+                    hashMap[s[i]] = i
+                    slow += 1
+        return maxLen
